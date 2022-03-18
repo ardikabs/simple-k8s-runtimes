@@ -1,0 +1,7 @@
+resources:
+- namespace.yaml
+- ../../limit-range
+- ../../serviceaccount
+namespace: victoria-metrics
+commonLabels:
+  namespace: victoria-metrics

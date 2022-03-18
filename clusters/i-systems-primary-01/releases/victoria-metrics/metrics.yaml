@@ -1,0 +1,110 @@
+vmselect:
+  enabled: true
+  name: vmselect
+  image:
+    repository: victoriametrics/vmselect
+    tag: v1.74.0-cluster
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  extraArgs:
+    dedup.minScrapeInterval: 1ms
+    search.maxQueueDuration: 300s
+    search.maxQueryDuration: 120s
+    search.maxSamplesPerQuery: "5000000000"
+  service:
+    servicePort: 8481
+    type: ClusterIP
+  ingress:
+    enabled: true
+    hosts:
+      - name: select.metrics.ardikabs.com
+        path: /select
+        port: http
+  serviceMonitor:
+    enabled: false
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1000Mi
+      ephemeral-storage: 3Gi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+vminsert:
+  enabled: true
+  name: vminsert
+  image:
+    repository: victoriametrics/vminsert
+    tag: v1.74.0-cluster
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  extraArgs:
+    replicationFactor: 3
+    maxConcurrentInserts: 256
+  service:
+    servicePort: 8480
+    type: ClusterIP
+  ingress:
+    enabled: true
+    hosts:
+      - name: insert.metrics.ardikabs.com
+        path: /insert
+        port: http
+  serviceMonitor:
+    enabled: false
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+vmstorage:
+  enabled: true
+  name: vmstorage
+  image:
+    repository: victoriametrics/vmstorage
+    tag: v1.74.0-cluster
+    pullPolicy: IfNotPresent
+
+  # -- Data retention period. Supported values 1w, 1d, number without measurement means month, e.g. 2 = 2month
+  retentionPeriod: 1w
+
+  extraArgs:
+    memory.allowedPercent: 80
+    search.maxUniqueTimeseries: "999999999"
+    bigMergeConcurrency: 10
+  persistentVolume:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    mountPath: /storage
+    size: 5Gi
+  replicaCount: 1
+  service:
+    servicePort: 8482
+    vminsertPort: 8400
+    vmselectPort: 8401
+  serviceMonitor:
+    enabled: false
+
+  resources:
+    limits:
+      cpu: 3
+      memory: 10Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  probe:
+    readiness:
+      initialDelaySeconds: 150
+      periodSeconds: 15
+      timeoutSeconds: 5
+      failureThreshold: 20
+    liveness:
+      initialDelaySeconds: 30
+      periodSeconds: 15
+      timeoutSeconds: 5
+      failureThreshold: 20

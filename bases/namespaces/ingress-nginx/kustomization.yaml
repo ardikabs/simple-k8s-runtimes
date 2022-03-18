@@ -1,0 +1,7 @@
+resources:
+- namespace.yaml
+- ../../limit-range
+- ../../serviceaccount
+namespace: ingress-nginx
+commonLabels:
+  namespace: ingress-nginx

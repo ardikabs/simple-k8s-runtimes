@@ -1,0 +1,61 @@
+controller:
+  config:
+    http-snippet: |
+      server {
+        listen 18080;
+
+        location /nginx_status {
+          allow all;
+          stub_status on;
+        }
+
+        location / {
+          return 404;
+        }
+      }
+  dnsPolicy: ClusterFirst
+  hostNetwork: true
+  image:
+    allowPrivilegeEscalation: true
+    image: ingress-nginx/controller
+    pullPolicy: IfNotPresent
+    registry: k8s.gcr.io
+    runAsUser: 101
+    tag: "v1.1.2"
+  ingressClass: nginx
+  kind: Deployment
+  replicaCount: 2
+  minAvailable: 1
+  podAnnotations:
+    ad.datadoghq.com/controller.check_names: '["nginx","nginx_ingress_controller"]'
+    ad.datadoghq.com/controller.init_configs: '[{},{}]'
+    ad.datadoghq.com/controller.instances: '[{"nginx_status_url": "http://%%host%%:18080/nginx_status"},{"prometheus_url":
+      "http://%%host%%:10254/metrics"}]'
+  reportNodeInternalIp: false
+  resources:
+    requests:
+      cpu: 100m
+      memory: 90Mi
+  service:
+    annotations: {}
+    enableHttp: true
+    enableHttps: true
+    enabled: true
+    labels: {}
+    nodePorts:
+      http: ""
+      https: ""
+      tcp: {}
+      udp: {}
+    ports:
+      http: 80
+      https: 443
+    targetPorts:
+      http: http
+      https: https
+    type: LoadBalancer
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+tcp: {}

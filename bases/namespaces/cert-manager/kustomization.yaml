@@ -1,0 +1,7 @@
+resources:
+- namespace.yaml
+- ../../limit-range
+- ../../serviceaccount
+namespace: cert-manager
+commonLabels:
+  namespace: cert-manager
