@@ -19,7 +19,7 @@ $ k8s-deployer apply <cluster_name>
 * [x] Create Kubernetes runtime management repository
 * [ ] Building observability system architecture (monitoring part)
   * [x] Victoria Metrics as aggregator
-  * [ ] Prometheus as scraper on each cluster (kube-prometheus, prometheus-community)
+  * [x] Prometheus as scraper on each cluster ([kube-prometheus](https://github.com/bitnami/charts/blob/master/bitnami/kube-prometheus), prometheus-community)
   * [ ] Prometheus-rules as alerting rule
   * [ ] Grafana as visualizer
   * [ ] Alertmanager as alert router
