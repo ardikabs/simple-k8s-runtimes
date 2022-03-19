@@ -1,0 +1,7 @@
+resources:
+- namespace.yaml
+- ../../limit-range
+- ../../serviceaccount
+namespace: observability-system
+commonLabels:
+  namespace: observability-system

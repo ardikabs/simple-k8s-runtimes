@@ -2,6 +2,6 @@ resources:
 - namespace.yaml
 - ../../limit-range
 - ../../serviceaccount
-namespace: victoria-metrics
+namespace: metallb-system
 commonLabels:
-  namespace: victoria-metrics
+  namespace: metallb-system
