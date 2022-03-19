@@ -1,12 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: stg-letsencrypt-ardikabs-com
+  name: letsencrypt-stg-ardikabs-com
 spec:
   acme:
     email: info@ardikabs.com
     privateKeySecretRef:
-      name: stg-letsencrypt-ardikabs-com
+      name: letsencrypt-stg-ardikabs-com
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     solvers:
     - http01:

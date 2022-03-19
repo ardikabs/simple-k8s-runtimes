@@ -8,6 +8,9 @@ repositories:
 - name: "vm"
   url: "https://victoriametrics.github.io/helm-charts"
 
+- name: "bitnami"
+  url: "https://charts.bitnami.com/bitnami"
+
 releases:
   - chart: ingress-nginx/ingress-nginx
     name: ingress-nginx
@@ -24,9 +27,15 @@ releases:
       - "{{`{{.Release.Namespace}}`}}/{{`{{.Release.Name}}`}}.yaml"
 
   - chart: vm/victoria-metrics-cluster
-    name: metrics
-    namespace: "victoria-metrics"
+    name: vm
+    namespace: "observability-system"
     version: 0.9.18
     values:
       - "{{`{{.Release.Namespace}}`}}/{{`{{.Release.Name}}`}}.yaml"
 
+  - chart: bitnami/kube-prometheus
+    name: po
+    namespace: observability-system
+    version: 6.7.0
+    values:
+      - "{{`{{.Release.Namespace}}`}}/{{`{{.Release.Name}}`}}.yaml"

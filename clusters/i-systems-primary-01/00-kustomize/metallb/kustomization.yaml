@@ -1,0 +1,21 @@
+namespace: metallb-system
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+  - github.com/danderson/metallb//manifests?ref=v0.10.2
+
+patches:
+- namespace.yaml
+- daemonset.yaml
+
+configMapGenerator:
+- name: config
+  files:
+    - config=configs/config.yaml
+
+secretGenerator:
+- name: memberlist
+  files:
+  - configs/secretkey

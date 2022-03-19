@@ -1,4 +1,0 @@
-resources:
-  - ../../../bases/namespaces/cert-manager
-  - ../../../bases/namespaces/ingress-nginx
-  - ../../../bases/namespaces/victoria-metrics

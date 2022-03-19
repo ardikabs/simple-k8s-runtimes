@@ -1,0 +1,5 @@
+address-pools:
+- name: default
+  protocol: layer2
+  addresses:
+  - 172.21.0.100-172.21.0.128

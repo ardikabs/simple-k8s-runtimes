@@ -22,7 +22,6 @@ controller:
     registry: k8s.gcr.io
     runAsUser: 101
     tag: "v1.1.2"
-  ingressClass: nginx
   kind: Deployment
   replicaCount: 2
   minAvailable: 1
@@ -58,4 +57,16 @@ controller:
     rollingUpdate:
       maxUnavailable: 1
     type: RollingUpdate
+
+  ## This section refers to the creation of the IngressClass resource
+  ## IngressClass resources are supported since k8s >= 1.18 and required since k8s >= 1.19
+  ingressClassResource:
+    name: nginx
+    enabled: true
+    default: true
+    controllerValue: "k8s.io/ingress-nginx"
+
+  # -- For backwards compatibility with ingress.class annotation, use ingressClass.
+  # Algorithm is as follows, first ingressClassName is considered, if not present, controller looks for ingress.class annotation
+  ingressClass: nginx
 tcp: {}

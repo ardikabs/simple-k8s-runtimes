@@ -1,0 +1,289 @@
+prometheus:
+  enabled: true
+  ## Bitnami Prometheus image version
+  ## ref: https://hub.docker.com/r/bitnami/prometheus/tags/
+  ## @param prometheus.image.registry Prometheus image registry
+  ## @param prometheus.image.repository Prometheus image repository
+  ## @param prometheus.image.tag Prometheus Image tag (immutable tags are recommended)
+  ## @param prometheus.image.pullSecrets Specify docker-registry secret names as an array
+  ##
+  image:
+    registry: docker.io
+    repository: bitnami/prometheus
+    tag: 2.33.5-debian-10-r9
+    ## Optionally specify an array of imagePullSecrets.
+    ## Secrets must be manually created in the namespace.
+    ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+    ## Example:
+    ## pullSecrets:
+    ##   - myRegistryKeySecretName
+    ##
+    pullSecrets: []
+
+  ## Prometheus pods' Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+  ## @param prometheus.podSecurityContext.enabled Enable security context
+  ## @param prometheus.podSecurityContext.runAsUser User ID for the container
+  ## @param prometheus.podSecurityContext.fsGroup Group ID for the container filesystem
+  ##
+  podSecurityContext:
+    enabled: true
+  ## Prometheus containers' Security Context
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+  ## @param prometheus.containerSecurityContext.enabled Enable container security context
+  ## @param prometheus.containerSecurityContext.readOnlyRootFilesystem Mount / (root) as a readonly filesystem
+  ## @param prometheus.containerSecurityContext.allowPrivilegeEscalation Switch privilegeEscalation possibility on or off
+  ## @param prometheus.containerSecurityContext.runAsNonRoot Force the container to run as a non root user
+  ## @param prometheus.containerSecurityContext.capabilities.drop [array] Linux Kernel capabilities which should be dropped
+  ##
+  containerSecurityContext:
+    enabled: true
+  ## Configure pod disruption budgets for Prometheus
+  ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget
+  ## @param prometheus.podDisruptionBudget.enabled Create a pod disruption budget for Prometheus
+  ## @param prometheus.podDisruptionBudget.minAvailable Minimum number / percentage of pods that should remain scheduled
+  ## @param prometheus.podDisruptionBudget.maxUnavailable Maximum number / percentage of pods that may be made unavailable
+  ##
+  podDisruptionBudget:
+    enabled: false
+
+  ## Configure the ingress resource that allows you to access the
+  ## Alertmanager installation. Set up the URL
+  ## ref: https://kubernetes.io/docs/user-guide/ingress/
+  ##
+  ingress:
+    enabled: false
+
+  ## @param prometheus.resources CPU/Memory resource requests/limits for node
+  ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1048Mi
+
+  ## @param prometheus.scrapeInterval Interval between consecutive scrapes
+  ##
+  scrapeInterval: ""
+  ## @param prometheus.evaluationInterval Interval between consecutive evaluations
+  ##
+  evaluationInterval: ""
+
+  ## @param prometheus.enableAdminAPI Enable Prometheus adminitrative API
+  ## ref: https://prometheus.io/docs/prometheus/latest/querying/api/#tsdb-admin-apis
+  ##
+  enableAdminAPI: false
+  ## @param prometheus.enableFeatures Enable access to Prometheus disabled features.
+  ## ref: https://prometheus.io/docs/prometheus/latest/disabled_features/
+  ##
+  enableFeatures: []
+  ## @param prometheus.alertingEndpoints Alertmanagers to which alerts will be sent
+  ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#alertmanagerendpoints
+  ##
+  alertingEndpoints: []
+  ## @param prometheus.externalLabels External labels to add to any time series or alerts when communicating with external systems
+  ##
+  externalLabels: {}
+  ## @param prometheus.replicaExternalLabelName Name of the external label used to denote replica name
+  ##
+  replicaExternalLabelName: ""
+  ## @param prometheus.replicaExternalLabelNameClear Clear external label used to denote replica name
+  ##
+  replicaExternalLabelNameClear: false
+  ## @param prometheus.routePrefix Prefix used to register routes, overriding externalUrl route
+  ## Useful for proxies that rewrite URLs.
+  ##
+  routePrefix: /
+  ## @param prometheus.prometheusExternalLabelName Name of the external label used to denote Prometheus instance name
+  ##
+  prometheusExternalLabelName: ""
+  ## @param prometheus.prometheusExternalLabelNameClear Clear external label used to denote Prometheus instance name
+  ##
+  prometheusExternalLabelNameClear: false
+  ## @param prometheus.secrets Secrets that should be mounted into the Prometheus Pods
+  ##
+
+  ## @param prometheus.ruleNamespaceSelector Namespaces to be selected for PrometheusRules discovery
+  ## See https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#namespaceselector for usage
+  ##
+  ruleNamespaceSelector: {}
+  ## @param prometheus.ruleSelector PrometheusRules to be selected for target discovery
+  ## If {}, select all ServiceMonitors
+  ##
+  ruleSelector: {}
+  ## @param prometheus.serviceMonitorSelector ServiceMonitors to be selected for target discovery
+  ## If {}, select all ServiceMonitors
+  ##
+  serviceMonitorSelector: {}
+  ## @param prometheus.matchLabels Matchlabels
+  ##
+  matchLabels: {}
+  ## @param prometheus.serviceMonitorNamespaceSelector Namespaces to be selected for ServiceMonitor discovery
+  ## See https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#namespaceselector for usage
+  ##
+  serviceMonitorNamespaceSelector: {}
+  ## @param prometheus.podMonitorSelector PodMonitors to be selected for target discovery.
+  ## If {}, select all PodMonitors
+  ##
+  podMonitorSelector: {}
+  ## @param prometheus.podMonitorNamespaceSelector Namespaces to be selected for PodMonitor discovery
+  ## See https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#namespaceselector for usage
+  ##
+  podMonitorNamespaceSelector: {}
+  ## @param prometheus.probeSelector Probes to be selected for target discovery.
+  ## If {}, select all Probes
+  ##
+  probeSelector: {}
+  ## @param prometheus.probeNamespaceSelector Namespaces to be selected for Probe discovery
+  ## See https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#namespaceselector for usage
+  ##
+  probeNamespaceSelector: {}
+
+  ## @param prometheus.retention Metrics retention days
+  ##
+  retention: 6h
+  ## @param prometheus.retentionSize Maximum size of metrics
+  ##
+  retentionSize: 5GB
+  ## @param prometheus.disableCompaction Disable the compaction of the Prometheus TSDB
+  ## See https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#prometheusspec
+  ## ref: https://prometheus.io/docs/prometheus/latest/storage/#compaction
+  ##
+  disableCompaction: false
+  ## @param prometheus.walCompression Enable compression of the write-ahead log using Snappy
+  ##
+  walCompression: false
+  ## @param prometheus.paused If true, the Operator won't process any Prometheus configuration changes
+  ##
+  paused: false
+  ## @param prometheus.replicaCount Number of Prometheus replicas desired
+  ##
+  replicaCount: 1
+  ## @param prometheus.logLevel Log level for Prometheus
+  ##
+  logLevel: info
+  ## @param prometheus.logFormat Log format for Prometheus
+  ##
+
+  ## @param prometheus.remoteWrite The remote_write spec configuration for Prometheus
+  ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#remotewritespec
+  ## remoteWrite:
+  ## - url: http://remote1/push
+  ##
+  remoteWrite:
+    - url: http://insert.172.21.0.100.nip.io/insert/0/prometheus
+
+  ## @param prometheus.storageSpec Prometheus StorageSpec for persistent data
+  ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/storage.md
+  ##
+  storageSpec: {}
+  ## Prometheus persistence parameters
+  ##
+  persistence:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+
+  ## @param prometheus.priorityClassName Priority class assigned to the Pods
+  ##
+  priorityClassName: ""
+
+  ## @param prometheus.additionalPrometheusRules PrometheusRule defines recording and alerting rules for a Prometheus instance.
+  ## - name: custom-recording-rules
+  ##   groups:
+  ##     - name: sum_node_by_job
+  ##       rules:
+  ##         - record: job:kube_node_labels:sum
+  ##           expr: sum(kube_node_labels) by (job)
+  ##     - name: sum_prometheus_config_reload_by_pod
+  ##       rules:
+  ##         - record: job:prometheus_config_last_reload_successful:sum
+  ##           expr: sum(prometheus_config_last_reload_successful) by (pod)
+  ## - name: custom-alerting-rules
+  ##   groups:
+  ##     - name: prometheus-config
+  ##       rules:
+  ##         - alert: PrometheusConfigurationReload
+  ##           expr: prometheus_config_last_reload_successful > 0
+  ##           for: 1m
+  ##           labels:
+  ##             severity: error
+  ##           annotations:
+  ##             summary: "Prometheus configuration reload (instance {{ $labels.instance }})"
+  ##             description: "Prometheus configuration reload error\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+  ##     - name: custom-node-exporter-alerting-rules
+  ##       rules:
+  ##         - alert: PhysicalComponentTooHot
+  ##           expr: node_hwmon_temp_celsius > 75
+  ##           for: 5m
+  ##           labels:
+  ##             severity: warning
+  ##           annotations:
+  ##             summary: "Physical component too hot (instance {{ $labels.instance }})"
+  ##             description: "Physical hardware component too hot\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+  ##         - alert: NodeOvertemperatureAlarm
+  ##           expr: node_hwmon_temp_alarm == 1
+  ##           for: 5m
+  ##           labels:
+  ##             severity: critical
+  ##           annotations:
+  ##             summary: "Node overtemperature alarm (instance {{ $labels.instance }})"
+  ##             description: "Physical node temperature alarm triggered\n  VALUE = {{ $value }}\n  LABELS: {{ $labels }}"
+  ##
+  additionalPrometheusRules: []
+
+  ## Note that the prometheus will fail to provision if the correct secret does not exist.
+  ## @param prometheus.additionalScrapeConfigs.enabled Enable additional scrape configs
+  ## @param prometheus.additionalScrapeConfigs.type Indicates if the cart should use external additional scrape configs or internal configs
+  ## @param prometheus.additionalScrapeConfigs.external.name Name of the secret that Prometheus should use for the additional external scrape configuration
+  ## @param prometheus.additionalScrapeConfigs.external.key Name of the key inside the secret to be used for the additional external scrape configuration
+  ## @param prometheus.additionalScrapeConfigs.internal.jobList A list of Prometheus scrape jobs
+  ##
+  additionalScrapeConfigs:
+    enabled: false
+    type: external
+    external:
+      ## Name of the secret that Prometheus should use for the additional scrape configuration
+      ##
+      name: ""
+      ## Name of the key inside the secret to be used for the additional scrape configuration.
+      ##
+      key: ""
+    internal:
+      jobList: []
+
+  ## @param prometheus.additionalScrapeConfigsExternal.enabled Deprecated: Enable additional scrape configs that are managed externally to this chart
+  ## @param prometheus.additionalScrapeConfigsExternal.name Deprecated: Name of the secret that Prometheus should use for the additional scrape configuration
+  ## @param prometheus.additionalScrapeConfigsExternal.key Deprecated: Name of the key inside the secret to be used for the additional scrape configuration
+  ##
+  additionalScrapeConfigsExternal:
+    enabled: false
+    name: ""
+    key: ""
+
+  ## Enable additional Prometheus alert relabel configs that are managed externally to this chart
+  ## Note that the prometheus will fail to provision if the correct secret does not exist.
+  ## @param prometheus.additionalAlertRelabelConfigsExternal.enabled Enable additional Prometheus alert relabel configs that are managed externally to this chart
+  ## @param prometheus.additionalAlertRelabelConfigsExternal.name Name of the secret that Prometheus should use for the additional Prometheus alert relabel configuration
+  ## @param prometheus.additionalAlertRelabelConfigsExternal.key Name of the key inside the secret to be used for the additional Prometheus alert relabel configuration
+  ##
+  additionalAlertRelabelConfigsExternal:
+    enabled: false
+    name: ""
+    key: ""
+
+
+## @section Alertmanager Parameters
+
+## Configuration for alertmanager
+## ref: https://prometheus.io/docs/alerting/alertmanager/
+##
+alertmanager:
+  ## @param alertmanager.enabled Deploy Alertmanager to the cluster
+  ##
+  enabled: false

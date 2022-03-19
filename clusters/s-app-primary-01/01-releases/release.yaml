@@ -1,0 +1,11 @@
+repositories:
+- name: "bitnami"
+  url: "https://charts.bitnami.com/bitnami"
+
+releases:
+  - chart: bitnami/kube-prometheus
+    name: po
+    namespace: observability-system
+    version: 6.7.0
+    values:
+      - "{{`{{.Release.Namespace}}`}}/{{`{{.Release.Name}}`}}.yaml"

@@ -16,8 +16,10 @@ vmselect:
     type: ClusterIP
   ingress:
     enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
     hosts:
-      - name: select.metrics.ardikabs.com
+      - name: select.172.21.0.100.nip.io
         path: /select
         port: http
   serviceMonitor:
@@ -47,8 +49,10 @@ vminsert:
     type: ClusterIP
   ingress:
     enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
     hosts:
-      - name: insert.metrics.ardikabs.com
+      - name: insert.172.21.0.100.nip.io
         path: /insert
         port: http
   serviceMonitor:
